@@ -5,8 +5,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    private final int WIDTH = 400;
-    private final int HEIGHT = 300;
+    private final int WIDTH = 1000;
+    private final int HEIGHT = 600;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -15,19 +15,23 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Peenar");
-        final Flower flower = new FlowerBuilder()
+        Group root = new Group();
+        /*final Flower flower = new FlowerBuilder()
                 .setRadius(30)
                 .setCenterX(200)
                 .setCenterY(150)
                 .setColor(Color.PINK)
                 .createFlower();
-        Group root = new Group();
-        flower.drawFlowerVariablePetals(root);
+        flower.drawFlowerVariablePetals(root);*/
         final Flower flower2 = new FlowerBuilder()
-                .setRadius(30)
-                .setCenterX(100)
-                .setCenterY(100)
+                .setRadius(50)
+                .setCenterX(200)
+                .setCenterY(420)
                 .setColor(Color.ORANGE)
+                .setPetalRadius(50)
+                .setNumberOfPetals(12)
+                .setLayers(1)
+                .setEnableStroke(false)
                 .createFlower();
         flower2.drawFlowerVariablePetals(root);
         final Scene scene = new Scene(root, WIDTH, HEIGHT, Color.LIGHTGREEN);
