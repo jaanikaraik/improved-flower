@@ -2,7 +2,6 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -16,11 +15,21 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Peenar");
-        final Flower flower = new Flower(10, 200, 150, Color.PINK);
+        final Flower flower = new FlowerBuilder()
+                .setRadius(30)
+                .setCenterX(200)
+                .setCenterY(150)
+                .setColor(Color.PINK)
+                .createFlower();
         Group root = new Group();
-        flower.drawFlower(root);
-        final Flower flower2 = new Flower(15, 100, 100, Color.ORANGE);
-        flower2.drawFlower(root);
+        flower.drawFlowerVariablePetals(root);
+        final Flower flower2 = new FlowerBuilder()
+                .setRadius(30)
+                .setCenterX(100)
+                .setCenterY(100)
+                .setColor(Color.ORANGE)
+                .createFlower();
+        flower2.drawFlowerVariablePetals(root);
         final Scene scene = new Scene(root, WIDTH, HEIGHT, Color.LIGHTGREEN);
         primaryStage.setScene(scene);
         primaryStage.show();
