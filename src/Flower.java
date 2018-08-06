@@ -18,7 +18,11 @@ public class Flower {
         this.color = color;
     }
 
-    public Group drawFlower(Group root) {
+    Group drawFlowerVariablePetals(Group root) {
+        return null;
+    }
+
+    Group drawFlower(Group root) {
         final Circle circle = new Circle(this.radius,Color.YELLOW);
         circle.setCenterX(this.centerX);
         circle.setCenterY(this.centerY);

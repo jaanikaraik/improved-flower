@@ -1,4 +1,3 @@
-// ww  w .  j a  va 2  s .  c o  m
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
