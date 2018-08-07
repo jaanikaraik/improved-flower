@@ -29,21 +29,24 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Peenar");
+        Group root = new Group();
         final Flower flower = new FlowerBuilder()
                 .setRadius(radius1)
                 .setCenterX(x1)
                 .setCenterY(y2)
                 .setColor(generateColor(colorInt1))
                 .createFlower();
-        Group root = new Group();
-        flower.drawFlowerVariablePetals(root);
+        flower.drawFlowerVariablePetals();
         final Flower flower2 = new FlowerBuilder()
                 .setRadius(radius2)
                 .setCenterX(x2)
                 .setCenterY(y2)
                 .setColor(generateColor(colorInt2))
                 .createFlower();
-        flower2.drawFlowerVariablePetals(root);
+        flower2.drawFlowerVariablePetals();
+        root.getChildren().add(flower);
+        root.getChildren().add(flower2);
+
         final Scene scene = new Scene(root, WIDTH, HEIGHT, Color.LIGHTGREEN);
         primaryStage.setScene(scene);
         primaryStage.show();

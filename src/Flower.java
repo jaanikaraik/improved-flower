@@ -1,11 +1,14 @@
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 
 
-public class Flower {
+public class Flower extends Group {
     int numberOfPetals = 7;
     int petalCloserBy = 2;
     int petalRadius = 30;
@@ -16,6 +19,8 @@ public class Flower {
     private Color color;
     private double constant = Math.sqrt(3);
     private boolean enableStroke = false;
+    private Rectangle boundingBox;
+    private Rectangle selectionBox;
 
     public Flower(int radius, int centerX, int centerY, Color color,
                   int numberOfPetals,
@@ -30,25 +35,39 @@ public class Flower {
         this.petalCloserBy = petalCloserBy;
         this.petalRadius = petalRadius;
         this.enableStroke = enableStroke;
+        this.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            showBoundingBox();
+        });
+        this.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+            removeBoxes();
+        });
+        this.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+            showSelectionBox();
+        });
+        this.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
+            this.setLayoutX(event.getSceneX());
+            this.setLayoutY(event.getSceneY());
+        });
+        this.setOnMouseReleased(event -> {
+            System.out.println("Mouse released");
+        });
     }
 
 
     /**
      * Makes a flower
      *
-     * @param root A root group component to hold the entire flower when it's done
      * @return the root
      */
-    Group drawFlowerVariablePetals(Group root) {
+    Group drawFlowerVariablePetals() {
 
         int degreesPerPetal;
 
         int radiusCombined = this.radius - petalCloserBy;
         ArrayList<Circle> petals = new ArrayList<>();
-        boolean shifted = true;
         for (int j = 0; j < layers; j++) {
             int degree = 0;
-            int actualNumberOfPetals = numberOfPetals + j*2;
+            int actualNumberOfPetals = numberOfPetals + j * 2;
             degreesPerPetal = 360 / actualNumberOfPetals;
             radiusCombined += petalRadius;
             for (int i = 0; i < actualNumberOfPetals; i++) {
@@ -58,7 +77,7 @@ public class Flower {
                 if (enableStroke) {
                     petal1.setStyle("-fx-stroke: black");
                 }
-                root.getChildren().add(petal1);
+                this.getChildren().add(petal1);
                 petal1.setCenterX(this.centerX + petalX);
                 petal1.setCenterY(this.centerY + petalY);
                 petals.add(petal1);
@@ -73,9 +92,45 @@ public class Flower {
         if (enableStroke) {
             circle.setStyle("-fx-stroke: black");
         }
-        root.getChildren().add(circle);
-        return root;
+        this.getChildren().add(circle);
+        return this;
     }
+
+    void showBoundingBox() {
+        removeBoxes();
+        Rectangle rectangle = new Rectangle();
+        rectangle.setX(this.getBoundsInParent().getMinX());
+        rectangle.setY(this.getBoundsInParent().getMinY());
+        rectangle.setWidth(this.getBoundsInParent().getWidth());
+        rectangle.setHeight(this.getBoundsInParent().getHeight());
+        rectangle.setStyle("-fx-fill: rgba(0,0,0,0); -fx-stroke: black");
+        boundingBox = rectangle;
+        this.getChildren().add(rectangle);
+    }
+
+    void showSelectionBox() {
+        removeBoxes();
+        Rectangle rectangle = new Rectangle();
+        rectangle.setX(this.getBoundsInParent().getMinX());
+        rectangle.setY(this.getBoundsInParent().getMinY());
+        rectangle.setWidth(this.getBoundsInParent().getWidth());
+        rectangle.setHeight(this.getBoundsInParent().getHeight());
+        rectangle.setStyle("-fx-stroke-dash-array: 12 5; -fx-fill: rgba(0,0,0,0); -fx-stroke: black;");
+        this.getChildren().add(rectangle);
+        this.selectionBox = rectangle;
+    }
+
+    void removeBoxes() {
+        if (boundingBox != null) {
+            this.getChildren().remove(boundingBox);
+            boundingBox = null;
+        }
+        if (selectionBox != null) {
+            this.getChildren().remove(selectionBox);
+            selectionBox = null;
+        }
+    }
+
 
     Group drawFlower(Group root) {
         final Circle circle = new Circle(this.radius, Color.YELLOW);
